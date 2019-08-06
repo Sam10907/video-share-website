@@ -1,0 +1,4 @@
+#film_website/.gitignore
+myvenv
+*.pyc
+__pycache__

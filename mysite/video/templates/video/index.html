@@ -1,0 +1,60 @@
+{% extends "video/base.html" %}
+{% block ajax%}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var isload=true;
+            var ajax_get;
+            var close_ajax=false;
+            var enter=true
+            $(window).scroll(function(){
+                scrollajax();
+            });
+            function scrollajax(){
+                var scrolltop=$(window).scrollTop();
+                var bodyheight=$(document).height(); //body的總高度
+                var clientheight=$(window).height(); //網頁可視區的高度
+                var offset=100;
+                if(scrolltop>=bodyheight-(clientheight+offset)){
+                    if(close_ajax){
+                        ajax_get.abort()
+                        enter=false
+                    }
+                    if(enter){
+                        if(isload){
+                            isload=false;
+                            ajax_get=$.get("{% url 'video:ajax_handle' film1.kind %}",function(data){
+                                console.log(1)
+                                for(var i1=0;i1<data['items'].length;i1++){
+                                    var a1=$('<a href="play/'+data['items'][i1]['videoId']+'/'+data['items'][i1]['id']+'/'+data['items'][i1]['kind']+'/'+'" class="thumb-nail_link"><img src="'+data['items'][i1]['image']+'"></img></a>')
+                                    var a2=$('<a href="play/'+data['items'][i1]['videoId']+'/'+data['items'][i1]['id']+'/'+data['items'][i1]['kind']+'/'+'" class="thumb"><h4>'+data['items'][i1]['title']+'</h4></a>')
+                                    var i=$('<i class="views">觀看次數'+data['items'][i1]['view']+'</i>')
+                                    var br=$('<br>')
+                                    var a3=$('<a href="#"><i>加入我的最愛</i></a>')
+                                    var div=$('<div class="film_list"></div>')
+                                    div.append(a1,a2,i,br,a3)
+                                    $('.box').append(div)
+                                }
+                                if(data['num']==-1){
+                                    close_ajax=true;
+                                }
+                                isload=true
+                            }
+                            );
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}
+{% block content%}
+    {% for f in films%}
+        <div class="film_list">
+            <a href="{{f.get_absolute_url}}" class="thumb-nail_link"><img src="{{f.image_url}}"></a>
+            <a href="{{f.get_absolute_url}}" class="thumb"><h4>{{f.title}}</h4></a>
+            <i class="views">觀看次數{{f.views}}</i>
+            <br>
+            <a href="#"><i>加入我的最愛</i></a>
+        </div>
+    {% endfor %}
+{% endblock %}

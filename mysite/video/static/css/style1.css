@@ -1,0 +1,47 @@
+body{
+    background-color: #d3d3d3;
+}
+#search{
+	width: 500px;
+	height: auto;
+	margin: 0 auto 50px auto;
+	position: relative;
+}
+#search_query{
+    float: left;
+	width: 290px;
+	height: 30px;
+    outline: none;
+	border: 0;
+}
+#sub_button{
+	width:60px;
+	height: 30px;
+	font-size:14px;
+	color:#fff;
+	background:green;
+    border: 0;
+	padding: 0;
+}
+#box{
+    padding: 0;
+    margin: 0;
+    float: right;
+}
+.film_list{
+    width: 500px;
+    height: 150px;
+    padding: 45px;
+    display: block;
+    text-align: justify;
+}
+.film_list .thumb-nail_link{
+	width: 110px;
+	height: 55px;
+    text-decoration: none;
+}
+.film_list #detail{
+	width: 135px;
+    height: 55px;
+    float: right;
+}

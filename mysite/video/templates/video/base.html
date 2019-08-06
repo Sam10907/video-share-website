@@ -1,0 +1,62 @@
+{% load static%}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <title>{{film1.kind}}</title>
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+        {% block ajax %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="sidebar">
+				<a href="#" id="logo"><img src="{%  static 'images/logo.png' %}" alt="logo"></a>
+				<ul>
+					<li class="selected">
+						<a href="{% url 'video:all_film' film.kind %}">{{film.kind}}</a>
+					</li>
+					<li>
+						<a href="{% url 'video:all_film' movie.kind %}">{{movie.kind}}</a>
+					</li>
+					<li>
+						<a href="{% url 'video:all_film' knowledge.kind %}">{{knowledge.kind}}</a>
+					</li>
+					<li>
+						<a href="{% url 'video:all_film' sport.kind %}">{{sport.kind}}</a>
+					</li>
+					<li>
+						<a href="{% url 'video:all_film' basketball.kind %}">{{basketball.kind}}</a>
+					</li>
+					<li>
+						<a href="{% url 'video:all_film' entertainment.kind %}">{{entertainment.kind}}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'video:all_film' life.kind %}">{{life.kind}}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'video:all_film' political.kind %}">{{political.kind}}</a>
+                    </li>
+                    <li>
+                            <a href="{% url 'video:all_film' food.kind %}">{{food.kind}}</a>
+                    </li>
+                    <li>
+                            <a href="{% url 'video:all_film' technology.kind %}">{{technology.kind}}</a>
+                    </li>
+				</ul>
+        </div>
+        <div id="search">
+            <form class="search-form" action="{% url 'video:all_film' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="search_query" name="search_input" placeholder="搜尋">
+                <input type="submit" id="sub_button" value="搜索">
+            </form>
+        </div> 
+        <div class="box">
+            {% block content %}
+            {% endblock %}
+        </div>       
+    </body>
+</html>

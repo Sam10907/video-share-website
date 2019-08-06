@@ -1,0 +1,88 @@
+body {
+	background-color: #d3cfcf;
+	margin:0;
+}
+a {
+	outline:none;
+}
+a img {
+	border:0;
+	display:block;
+}
+.sidebar {
+	width:229px;
+	height:auto;
+	float:left;
+	position: fixed;
+}
+.sidebar ul {
+	padding:0;
+	margin:0;
+	list-style:none;
+}
+.sidebar ul li:first-child {
+	padding-top:0;
+}
+.sidebar ul li {
+	text-align:right;
+	padding:27px 27px 0 0;
+}
+.sidebar ul li.selected a, .sidebar ul li a:hover {
+	color:#6b6b6b;
+}
+.sidebar ul li a {
+	font-family:Impact, Haettenschweiler;
+	font-size:24px;
+	color:#919191;
+	font-weight:normal;
+	text-transform:uppercase;
+	text-decoration:none;
+	line-height:30px;
+	text-shadow:0 1px 0 #dfdfdf;
+}
+#search{
+	width: 500px;
+	height: auto;
+	margin: 50px auto;
+	position: relative;
+}
+#search_query{
+    float: left;
+	width: 290px;
+	height: 30px;
+    outline: none;
+	border: 0;
+}
+#sub_button{
+	width:60px;
+	height: 30px;
+	font-size:14px;
+	color:#fff;
+	background:green;
+    border: 0;
+	padding: 0;
+}
+.box{
+	padding: 0;
+	margin-left: 230px;
+}
+.film_list{
+	width: 320px;
+	height: 290px;
+	float: left;
+	padding: 6px;
+	overflow: hidden;
+}
+.film_list .thumb-nail_link{
+	width: 320px;
+	height: 170px;
+	display: block;
+	text-decoration: none;
+}
+.film_list .thumb{
+	text-decoration: none;
+	width: 320px;
+	height: 54px;
+	overflow: hidden;
+	display: block;
+}
