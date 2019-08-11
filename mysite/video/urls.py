@@ -12,4 +12,5 @@ urlpatterns=[
     path('play/<str:videoId>/<int:Id>/<str:kinds>/',views.play_video,name='play_video'),
     path('<str:key>/play/<str:videoId>/<int:Id>/<str:kinds>/',views.play_video,name='play_video'),
     path('<str:key1>/<str:key>/play/<str:videoId>/<int:Id>/<str:kinds>/',views.play_video,name='play_video'),
+    path('logout/done/',views.log_out,name='log_out'),
 ]

@@ -13,6 +13,13 @@
     </head>
     <body>
         <div class="sidebar">
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'social:begin' 'google-oauth2' %}" id="google">Google+ 登入</a>
+            {% else %}
+                <i>Hi {{request.user.first_name}}</i>
+                <br>
+                <a href="{% url 'video:log_out' %}">登出</a>
+            {% endif %}
 				<a href="#" id="logo"><img src="{%  static 'images/logo.png' %}" alt="logo"></a>
 				<ul>
 					<li class="selected">
@@ -57,6 +64,6 @@
         <div class="box">
             {% block content %}
             {% endblock %}
-        </div>       
+        </div> 
     </body>
 </html>
