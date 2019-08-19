@@ -6,9 +6,19 @@
         <meta http-equiv="expires" content="0">
         <title>{{film.title}}</title>
         <link href="{% static 'css/style1.css' %}" rel="stylesheet">
+        <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.love').click(function(){
+                    $.get("/video/addlove/ajax/"+$(this).attr('id')+"/"+$(this).parent().attr('class')+"/",function(data){
+                        console.log(1);
+                    });
+                });
+            });
+        </script>
     </head>
     <body>
-            <a href="#" id="logo"><img src="{%  static 'images/logo.png' %}" alt="logo"></a>
+            <a href="/video/" id="logo"><img src="{%  static 'images/logo.png' %}" alt="logo"></a>
         <div id="search">
             <form class="search-form" action="{% url 'video:all_film' %}" method="POST">
                 {% csrf_token %}
@@ -25,7 +35,7 @@
                         <br>
                         <i class="views" style="font-size: 9px;">觀看次數{{f.views}}</i>
                         {% if request.user.is_authenticated %}
-                            <a href="#"><i style="font-size: 9px;">加入我的最愛</i></a>
+                            <button class="{{request.user.id}}"><i style="font-size: 9px;" id="{{f.id}}" class="love">加入我的最愛</i></button>
                         {% endif %}
                     </div>
                 </div>
@@ -34,5 +44,41 @@
         <iframe width="1120" height="630" src="{{film.get_video_link}}"+ frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <h2>{{film.title}}</h2>
         <p style="font-size: 15px">{{film.description}}</p>
+        <h2>留言板</h2>
+        {% if request.user.is_authenticated %}
+            <form action="." method="POST">
+                <p>
+                    <label for="id_body">新增留言:</label>
+                    <br>
+                    <textarea name="body" cols="40" rows="5" required id="id_body"></textarea>
+                </p>
+                {% csrf_token %}
+                <input type="submit" value="留言">
+            </form>
+        {% else %}
+            <form action="." method="POST">
+                <p>
+                    <label for="id_body">新增留言:</label>
+                    <br>
+                    <textarea name="body" cols="40" rows="5" required id="id_body"></textarea>
+                </p>
+                {% csrf_token %}
+                <button><a href="{% url 'social:begin' 'google-oauth2' %}" style="text-decoration: none;color: black">登入</a></button>
+            </form>
+        {%endif %}
+        {% with comments.count as total %}
+            <h2>{{total}}則流言</h2>
+        {% endwith %}
+        {% for c in comments%}
+            <h5>{{c.name}}</h5>
+            <p>{{c.body | linebreaks}}</p>
+            {% if request.user.first_name == c.name %}
+                <form action="." method="POST">
+                    <input type="hidden" name="id_comment" value="{{c.id}}">
+                    {% csrf_token %}
+                    <input type="submit" value="刪除">
+                </form>
+            {% endif %}
+        {% endfor %}
     </body>
 </html>

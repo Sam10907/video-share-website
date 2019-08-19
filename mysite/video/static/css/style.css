@@ -92,3 +92,6 @@ a img {
 	overflow: hidden;
 	display: block;
 }
+#love_list{
+	float: right;
+}

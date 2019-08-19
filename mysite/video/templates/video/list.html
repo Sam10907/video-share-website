@@ -1,0 +1,27 @@
+{% extends "video/base.html" %}
+{% block ajax %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.love').click(function(){
+                $(this).hide();
+                $(this).parent().hide();
+                $(this).parent().siblings().hide();
+                $(this).parent().siblings().parent().hide();
+                $.get("/video/deletelove/ajax/"+$(this).attr('id')+"/"+$(this).parent().attr('class')+"/",function(data){
+                    console.log(data);
+                })
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    {% for f in film_list %}
+        <div class="film_list">
+            <a href="{{f.get_absolute_url}}" class="thumb-nail_link"><img src="{{f.image_url}}"></a>
+            <a href="{{f.get_absolute_url}}" class="thumb"><h4>{{f.title}}</h4></a>
+            <i class="views">觀看次數{{f.views}}</i>
+            <br>
+            <button class="{{request.user.id}}"><i id="{{f.id}}" class="love">取消我的最愛</i></button>
+        </div>
+    {% endfor %}
+{% endblock %}

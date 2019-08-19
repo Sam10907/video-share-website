@@ -2,6 +2,11 @@
 {% if start_ajax %}
     {% block ajax %}
         <script type="text/javascript">
+            function add(selfobj){
+                $.get("/video/addlove/ajax/"+$(selfobj).attr('id')+"/"+$(selfobj).parent().attr('class')+"/",function(data){
+                    console.log(data);
+                });
+            }
             $(document).ready(function(){
                 var isload=true;
                 var enter=true
@@ -9,6 +14,11 @@
                 $.get("{% url 'video:ajax_search' %}",function(data){
                     $(window).scroll(function(){
                         scrollajax(data);
+                    });
+                });
+                $('.love').click(function(){
+                    $.get("/video/addlove/ajax/"+$(this).attr('id')+"/"+$(this).parent().attr('class')+"/",function(data){
+                        console.log(data);
                     });
                 });
                 function scrollajax(data){
@@ -24,12 +34,12 @@
                                     if(num>=data['sum']){
                                         break;
                                     }
-                                    var a1=$('<a href="play/'+data['items'][num]['videoId']+'/'+data['items'][num]['id']+'/'+data['items'][num]['kind']+'/'+'" class="thumb-nail_link"><img src="'+data['items'][num]['image']+'"></img></a>')
-                                    var a2=$('<a href="play/'+data['items'][num]['videoId']+'/'+data['items'][num]['id']+'/'+data['items'][num]['kind']+'/'+'" class="thumb"><h4>'+data['items'][num]['title']+'</h4></a>')
+                                    var a1=$('<a href="/video/play/'+data['items'][num]['videoId']+'/'+data['items'][num]['id']+'/'+data['items'][num]['kind']+'/'+'" class="thumb-nail_link"><img src="'+data['items'][num]['image']+'"></img></a>')
+                                    var a2=$('<a href="/video/play/'+data['items'][num]['videoId']+'/'+data['items'][num]['id']+'/'+data['items'][num]['kind']+'/'+'" class="thumb"><h4>'+data['items'][num]['title']+'</h4></a>')
                                     var i=$('<i class="views">觀看次數'+data['items'][num]['view']+'</i>')
                                     var br=$('<br>')
                                     if(data['mylove']){
-                                        var a3=$('<a href="#"><i>加入我的最愛</i></a>')
+                                        var a3=$('<button class="{{request.user.id}}"><i id="'+data['items'][num]['id']+'" class="love" onclick="add(this)">加入我的最愛</i></button>')
                                         var div=$('<div class="film_list"></div>')
                                         div.append(a1,a2,i,br,a3)
                                     }
@@ -56,7 +66,7 @@
             <i class="views">觀看次數{{f.views}}</i>
             <br>
             {% if request.user.is_authenticated %}
-                <a href="#"><i>加入我的最愛</i></a>
+                <button class="{{request.user.id}}"><i id="{{f.id}}" class="love">加入我的最愛</i></button>
             {% endif %}
         </div>
     {% endfor %}
