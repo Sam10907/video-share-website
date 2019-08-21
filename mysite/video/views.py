@@ -165,6 +165,7 @@ def ajax_love(request,film_id,user_id):
         user_obj=user_filmlist.objects.get(userId=user_id)
     except ObjectDoesNotExist:
         user_obj=user_filmlist.objects.create(userId=user_id,filmList='')
+    request.session['user_info']={}
     request.session['user_info'][user_id]=film_id
     request.session.modified = True
     user_obj.filmList+=request.session['user_info'][user_id]+','
