@@ -57,11 +57,6 @@
             </form>
         {% else %}
             <form action="." method="POST">
-                <!--<p>
-                    <label for="id_body">新增留言:</label>
-                    <br>
-                    <textarea name="body" cols="40" rows="5" required id="id_body"></textarea>
-                </p>-->
                 {% csrf_token %}
                 <button><a href="{% url 'social:begin' 'google-oauth2' %}" style="text-decoration: none;color: black">登入發表留言</a></button>
             </form>
