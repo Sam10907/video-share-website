@@ -108,6 +108,7 @@ def search_film(request,search):
         rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
         return rep
 def ajax_search(request):
+    global ajax_search_films
     if not ajax_search_films:
         data={}
         data['null']=1
