@@ -6,14 +6,16 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import CommentForm
+from django.core import serializers
+import json
 # Create your views here.
-
-ajax_search_films=[] #承接搜尋到的Film物件(20~)
 
 def all_film(request,kinds=None):
     if request.POST:
         data={}
         data['search']=request.POST['search_input']
+        if not data['search']:
+            return redirect(reverse('video:all_film'))
         url=reverse('video:search_film',kwargs=data)
         return redirect(url)
     else:
@@ -52,7 +54,7 @@ def ajax_handle(request,kinds):
     films=Film.objects.filter(kind=kinds).order_by('-publish')[20:]
     data={}
     data['items']=[]
-    if 'sessionid' in request.COOKIES:
+    if request.user.is_authenticated:
         data['mylove']=True
     else:
         data['mylove']=False
@@ -72,44 +74,42 @@ def search_film(request,search):
     political=Film.objects.filter(kind='政治').get(id=141)
     food=Film.objects.filter(kind='食物').get(id=161)
     technology=Film.objects.filter(kind='科技').get(id=181)
-    global ajax_search_films
-    ajax_search_films=[]
     if films.count()<=20:
+        request.session['ajax_search_films']=[]
         rep=render(request,'video/search.html',{'films':films,
-                                                                                                'film':film,
-                                                                                                'movie':movie,
-                                                                                                'knowledge':knowledge,
-                                                                                                'sport':sport,
-                                                                                                'basketball':basketball,
-                                                                                                'entertainment':entertainment,
-                                                                                                'life':life,
-                                                                                                'political':political,
-                                                                                                'food':food,
-                                                                                                'technology':technology})
+                                                                                            'film':film,
+                                                                                            'movie':movie,
+                                                                                            'knowledge':knowledge,
+                                                                                            'sport':sport,
+                                                                                            'basketball':basketball,
+                                                                                            'entertainment':entertainment,
+                                                                                            'life':life,
+                                                                                            'political':political,
+                                                                                            'food':food,
+                                                                                            'technology':technology})
         rep['Cache-Control']='no-store, no-cache, must-revalidate'
         rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
         return rep
     else:
-        ajax_search_films=films[20:]
+        request.session['ajax_search_films']=json.loads(serializers.serialize("json",films[20:]))
         start_ajax=True
         rep=render(request,'video/search.html',{'films':films[0:20],
-                                                                                                'film':film,
-                                                                                                'movie':movie,
-                                                                                                'knowledge':knowledge,
-                                                                                                'sport':sport,
-                                                                                                'basketball':basketball,
-                                                                                                'entertainment':entertainment,
-                                                                                                'life':life,
-                                                                                                'political':political,
-                                                                                                'food':food,
-                                                                                                'technology':technology,
-                                                                                                'start_ajax':start_ajax})
+                                                                                            'film':film,
+                                                                                            'movie':movie,
+                                                                                            'knowledge':knowledge,
+                                                                                            'sport':sport,
+                                                                                            'basketball':basketball,
+                                                                                            'entertainment':entertainment,
+                                                                                            'life':life,
+                                                                                            'political':political,
+                                                                                            'food':food,
+                                                                                            'technology':technology,
+                                                                                            'start_ajax':start_ajax})
         rep['Cache-Control']='no-store, no-cache, must-revalidate'
         rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
         return rep
 def ajax_search(request):
-    global ajax_search_films
-    if not ajax_search_films:
+    if not request.session['ajax_search_films']:
         data={}
         data['null']=1
         rep=JsonResponse(data)
@@ -117,17 +117,17 @@ def ajax_search(request):
         rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
         return rep
     else:
-        films=ajax_search_films
+        films=request.session['ajax_search_films']
         data={}
         data['items']=[]
-        data['sum']=films.count()
+        data['sum']=len(films)
         data['null']=0
-        if 'sessionid' in request.COOKIES:
+        if request.user.is_authenticated:
             data['mylove']=True
         else:
             data['mylove']=False
-        for i in range(0,films.count()):
-            item={'image':films[i].image_url,'title':films[i].title,'view':films[i].views,'videoId':films[i].video_id,'id':films[i].id,'kind':films[i].kind}
+        for i in range(0,len(films)):
+            item={'image':films[i]['fields']['image_url'],'title':films[i]['fields']['title'],'view':films[i]['fields']['views'],'videoId':films[i]['fields']['video_id'],'id':films[i]['pk'],'kind':films[i]['fields']['kind']}
             data['items'].append(item)
         rep=JsonResponse(data)
         rep['Cache-Control']='no-store, no-cache, must-revalidate'
