@@ -73,6 +73,8 @@ def search_film(request,search):
     food=Film.objects.filter(kind='食物').get(id=161)
     technology=Film.objects.filter(kind='科技').get(id=181)
     if films.count()<=20:
+        global ajax_search_films
+        ajax_search_films=[]
         rep=render(request,'video/search.html',{'films':films,
                                                                                                 'film':film,
                                                                                                 'movie':movie,
@@ -88,7 +90,6 @@ def search_film(request,search):
         rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
         return rep
     else:
-        global ajax_search_films
         ajax_search_films=films[20:]
         start_ajax=True
         rep=render(request,'video/search.html',{'films':films[0:20],
@@ -107,21 +108,30 @@ def search_film(request,search):
         rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
         return rep
 def ajax_search(request):
-    films=ajax_search_films
-    data={}
-    data['items']=[]
-    data['sum']=films.count()
-    if 'sessionid' in request.COOKIES:
-         data['mylove']=True
+    if not ajax_search_films:
+        data={}
+        data['null']=1
+        rep=JsonResponse(data)
+        rep['Cache-Control']='no-store, no-cache, must-revalidate'
+        rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
+        return rep
     else:
-        data['mylove']=False
-    for i in range(0,films.count()):
-        item={'image':films[i].image_url,'title':films[i].title,'view':films[i].views,'videoId':films[i].video_id,'id':films[i].id,'kind':films[i].kind}
-        data['items'].append(item)
-    rep=JsonResponse(data)
-    rep['Cache-Control']='no-store, no-cache, must-revalidate'
-    rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
-    return rep
+        films=ajax_search_films
+        data={}
+        data['items']=[]
+        data['sum']=films.count()
+        data['null']=0
+        if 'sessionid' in request.COOKIES:
+            data['mylove']=True
+        else:
+            data['mylove']=False
+        for i in range(0,films.count()):
+            item={'image':films[i].image_url,'title':films[i].title,'view':films[i].views,'videoId':films[i].video_id,'id':films[i].id,'kind':films[i].kind}
+            data['items'].append(item)
+        rep=JsonResponse(data)
+        rep['Cache-Control']='no-store, no-cache, must-revalidate'
+        rep['Expires']='Mon, 26 Jul 1990 05:00:00 GMT'
+        return rep
 def play_video(request,videoId,Id,kinds):
     film=get_object_or_404(Film,video_id=videoId,id=Id)
     film.views+=1

@@ -12,9 +12,11 @@
                 var enter=true
                 var num=0;
                 $.get("{% url 'video:ajax_search' %}",function(data){
-                    $(window).scroll(function(){
-                        scrollajax(data);
-                    });
+                    if (data['null']!=1){
+                        $(window).scroll(function(){
+                            scrollajax(data);
+                        });
+                    }
                 });
                 $('.love').click(function(){
                     $.get("/video/addlove/ajax/"+$(this).attr('id')+"/"+$(this).parent().attr('class')+"/",function(data){
