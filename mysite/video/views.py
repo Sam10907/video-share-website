@@ -9,7 +9,7 @@ from .forms import CommentForm
 # Create your views here.
 
 ajax_search_films=[] #承接搜尋到的Film物件(20~)
-user_info_list=[]
+
 def all_film(request,kinds=None):
     if request.POST:
         data={}
@@ -72,8 +72,8 @@ def search_film(request,search):
     political=Film.objects.filter(kind='政治').get(id=141)
     food=Film.objects.filter(kind='食物').get(id=161)
     technology=Film.objects.filter(kind='科技').get(id=181)
+    global ajax_search_films
     if films.count()<=20:
-        global ajax_search_films
         ajax_search_films=[]
         rep=render(request,'video/search.html',{'films':films,
                                                                                                 'film':film,
