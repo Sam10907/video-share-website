@@ -30,11 +30,8 @@ def all_film(request,kinds=None):
         political=Film.objects.filter(kind='政治').get(id=141)
         food=Film.objects.filter(kind='食物').get(id=161)
         technology=Film.objects.filter(kind='科技').get(id=181)
-        global num
-        num=20
         if kinds:
             films=Film.objects.filter(kind=kinds).order_by('-publish')[0:20]
-            num=20
         rep=render(request,'video/index.html',{'films':films,
                                                                                                 'film':film,
                                                                                                 'movie':movie,
