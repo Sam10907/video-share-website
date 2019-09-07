@@ -51,11 +51,17 @@ def ajax_handle(request,kinds):
     films=Film.objects.filter(kind=kinds).order_by('-publish')[20:]
     data={}
     data['items']=[]
+    data['sum']=films.count()
+    data['close']=False
+    index=int(request.GET['num'])
     if request.user.is_authenticated:
         data['mylove']=True
     else:
         data['mylove']=False
-    for i in range(0,films.count()):
+    for i in range(index,index+4):
+        if i >= data['sum']:
+            data['close']=True
+            break
         item={'image':films[i].image_url,'title':films[i].title,'view':films[i].views,'videoId':films[i].video_id,'id':films[i].id,'kind':films[i].kind}
         data['items'].append(item)
     return JsonResponse(data)
@@ -119,11 +125,16 @@ def ajax_search(request):
         data['items']=[]
         data['sum']=len(films)
         data['null']=0
+        data['close']=False
+        index=int(request.GET['num'])
         if request.user.is_authenticated:
             data['mylove']=True
         else:
             data['mylove']=False
-        for i in range(0,len(films)):
+        for i in range(index,index+8):
+            if i >= data['sum']:
+                data['close']=True
+                break
             item={'image':films[i]['fields']['image_url'],'title':films[i]['fields']['title'],'view':films[i]['fields']['views'],'videoId':films[i]['fields']['video_id'],'id':films[i]['pk'],'kind':films[i]['fields']['kind']}
             data['items'].append(item)
         rep=JsonResponse(data)
