@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ShareFilm',
         'USER':'debian-sys-maint',
-        'PASSWORD':'vSEM9dkpWNEbj0mf',
+        'PASSWORD':'----------',
         'HOST':'localhost',
         'PORT':'3306',
     }
@@ -135,8 +135,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='251107137727-5ql9r2qm9nijrbt2rnjog0u3ng6ra019.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='ljxm2m5yQeV9v79wq6VZqNC6'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='-----------------------'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='------------------------'
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS=['gmail.com']
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
