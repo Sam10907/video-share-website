@@ -10,11 +10,9 @@
             var isload=true;
             var enter=true;
             var num=0;
-            //$.get("{% url 'video:ajax_handle' film1.kind %}",function(data){
             $(window).scroll(function(){
                 scrollajax();
             });
-            //});
             $('.love').click(function(){
                 $.get("/video/addlove/ajax/"+$(this).attr('id')+"/"+$(this).parent().attr('class')+"/",function(data){
                     console.log(data);
@@ -52,23 +50,6 @@
                                     enter=false;
                                 }
                             });
-                            /*for(var i1=0;i1<4;i1++,num++){
-                                var a1=$('<a href="/video/play/'+data['items'][num]['videoId']+'/'+data['items'][num]['id']+'/'+data['items'][num]['kind']+'/'+'" class="thumb-nail_link"><img src="'+data['items'][num]['image']+'"></img></a>')
-                                var a2=$('<a href="/video/play/'+data['items'][num]['videoId']+'/'+data['items'][num]['id']+'/'+data['items'][num]['kind']+'/'+'" class="thumb"><h4>'+data['items'][num]['title']+'</h4></a>')
-                                var i=$('<i class="views">觀看次數'+data['items'][num]['view']+'</i>')
-                                var br=$('<br>')
-                                if(data['mylove']){
-                                    var a3=$('<button class="{{request.user.id}}"><i id="'+data['items'][num]['id']+'" class="love" onclick="add(this)">加入我的最愛</i></button>')
-                                    var div=$('<div class="film_list"></div>')
-                                    div.append(a1,a2,i,br,a3)
-                                }
-                                else{
-                                    var div=$('<div class="film_list"></div>')
-                                    div.append(a1,a2,i)
-                                }
-                                $('.box').append(div)
-                            }
-                            isload=true*/
                         }
                     }
                 }
