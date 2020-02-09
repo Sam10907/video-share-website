@@ -2,12 +2,12 @@ import urllib.request as req
 import json
 import pymysql
 
-conn=pymysql.connect(host='localhost',user='debian-sys-maint',password='vSEM9dkpWNEbj0mf',db='ShareFilm',port=3306,charset='utf8mb4')
+conn=pymysql.connect(host='localhost',user='debian-sys-maint',password='............',db='ShareFilm',port=3306,charset='utf8mb4')
 cursor=conn.cursor()  #連線資料庫
 header={'user-agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
 topicId=['','%2Fm%2F02vxn','%2Fm%2F01k8wb','%2Fm%2F06ntj','%2Fm%2F018w8','%2Fm%2F02jjt','%2Fm%2F019_rr','%2Fm%2F05qt0','%2Fm%2F02wbm','%2Fm%2F07c1v']
 kinds=['全部','電影','知識','運動','籃球','娛樂','生活','政治','食物','科技']
-api_key='AIzaSyDRjZPQPw8OcIqWAdPdlM9l02r-qrnMFBM'
+api_key='api-key.....'
 root_url='https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&order=rating&type=video&videoDefinition=high&videoDuration=medium&videoEmbeddable=true&key='+api_key
 for i in range(0,len(topicId)):
     if i==0:
